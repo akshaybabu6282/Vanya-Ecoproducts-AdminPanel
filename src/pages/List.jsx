@@ -58,6 +58,7 @@ function List({ token }) {
       if (editingProduct.itemCount !== '' && editingProduct.itemCount != null) {
         formData.append('itemCount', Number(editingProduct.itemCount));
       }
+      formData.append('hsnCode', String(editingProduct.hsnCode ?? '').trim());
 
       // append new images (if any)
       editingProduct.image1 && formData.append('image1', editingProduct.image1);
@@ -91,18 +92,19 @@ function List({ token }) {
     <>
       <p className="mb-2 font-bold">All Products List</p>
       <div className="flex flex-col gap-2">
-        <div className="hidden md:grid grid-cols-[1fr_2fr_1fr_1fr_1fr_1fr_1fr] items-center py-1 px-2 border bg-gray-100 text-sm">
+        <div className="hidden md:grid grid-cols-[1fr_2fr_1fr_1fr_1fr_1fr_1fr_1fr] items-center py-1 px-2 border bg-gray-100 text-sm">
           <b className="text-left">Image</b>
           <b className="text-left">Name</b>
           <b className="text-center">Selling</b>
           <b className="text-center">Sourced</b>
           <b className="text-center">Item count</b>
+          <b className="text-center">HSN</b>
           <b className="text-center">Actions</b>
         </div>
 
         {list.reverse().map((item, index) => (
           <div
-            className="grid grid-cols-[1fr_2fr_1fr_1fr_1fr_1fr_1fr] items-center gap-2 py-1 px-2 border text-sm"
+            className="grid grid-cols-[1fr_2fr_1fr_1fr_1fr_1fr_1fr_1fr] items-center gap-2 py-1 px-2 border text-sm"
             key={index}
           >
             <img className="w-12" src={item.image[0]} alt={item.name} />
@@ -118,6 +120,9 @@ function List({ token }) {
             <p className="text-center font-medium">
               {item.itemCount != null && item.itemCount !== '' ? item.itemCount : '—'}
             </p>
+            <p className="text-center font-medium">
+              {item.hsnCode ? item.hsnCode : '—'}
+            </p>
             <p
               onClick={() => removeProduct(item._id)}
               className="text-center cursor-pointer text-red-600 font-bold"
@@ -129,6 +134,7 @@ function List({ token }) {
                 setEditingProduct({
                   ...item,
                   itemCount: item.itemCount ?? '',
+                  hsnCode: item.hsnCode ?? '',
                   quantityOptions: (item.quantityOptions || []).map((opt) => ({
                     ...opt,
                     originalPrice: opt.originalPrice ?? '',
@@ -268,6 +274,17 @@ function List({ token }) {
                 placeholder="e.g. 10"
                 min="0"
                 step="1"
+              />
+            </div>
+
+            <div className="mb-4">
+              <p className="mb-2">HSN code</p>
+              <input
+                type="text"
+                value={editingProduct.hsnCode ?? ''}
+                onChange={(e) => setEditingProduct({ ...editingProduct, hsnCode: e.target.value })}
+                className="w-full px-3 py-2 border rounded"
+                placeholder="e.g. 080450"
               />
             </div>
 

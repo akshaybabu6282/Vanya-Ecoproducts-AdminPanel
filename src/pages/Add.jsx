@@ -16,6 +16,7 @@ function Add({ token }) {
   const [bestseller, setBestseller] = useState(false)
   const [quantityOptions, setQuantityOptions] = useState([{ label: '', price: '', originalPrice: '' }])
   const [itemCount, setItemCount] = useState('')
+  const [hsnCode, setHsnCode] = useState('')
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
@@ -37,6 +38,7 @@ function Add({ token }) {
       if (itemCount !== '' && itemCount != null) {
         formData.append("itemCount", Number(itemCount))
       }
+      formData.append("hsnCode", hsnCode.trim())
 
       // image1 && formData.append("image1", image1)
       // image2 && formData.append("image2", image2)
@@ -52,6 +54,7 @@ function Add({ token }) {
         setBestseller(false)
         setQuantityOptions([{ label: '', price: '', originalPrice: '' }])
         setItemCount('')
+        setHsnCode('')
         // setImage1(false)
         // setImage2(false)
         // setImage3(false)
@@ -157,6 +160,17 @@ function Add({ token }) {
           placeholder='e.g. 10'
           min="0"
           step="1"
+          className='w-full max-w-[500px] px-3 py-2'
+        />
+      </div>
+
+      <div className='w-full'>
+        <p className='mb-2'>HSN code</p>
+        <input
+          onChange={(e) => setHsnCode(e.target.value)}
+          value={hsnCode}
+          type="text"
+          placeholder='e.g. 080450'
           className='w-full max-w-[500px] px-3 py-2'
         />
       </div>
